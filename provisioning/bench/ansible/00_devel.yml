@@ -4,11 +4,13 @@
   gather_facts: no
   tasks:
     - apt: upgrade=safe update_cache=true
-    - apt: name={{item}} state=present install_recommends=no
-      with_items:
-        - git
-        - curl
-        - libreadline-dev
-        - build-essential
-        - libmysqlclient-dev
-        - libssl-dev
+    - apt: 
+        name:
+            - git
+            - curl
+            - libreadline-dev
+            - build-essential
+            - libmysqlclient-dev
+            - libssl-dev
+        state: present 
+        install_recommends: no

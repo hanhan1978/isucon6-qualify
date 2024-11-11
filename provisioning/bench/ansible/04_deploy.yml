@@ -15,4 +15,4 @@
     - name: bench (systemd)
       copy: src=../files/isucon6-bench-worker.service  dest=/etc/systemd/system/isucon6-bench-worker.service owner=root mode=644
     - name: enable bench worker
-      service: name=isucon6-bench-worker state=running enabled=true
+      service: name=isucon6-bench-worker state=started enabled=true

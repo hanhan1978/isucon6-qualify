@@ -1,3 +1,5 @@
 *.test
 bench
 bin/
+isucon6q-bench-worker
+isucon6q-bench
