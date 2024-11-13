@@ -55,15 +55,16 @@
   tags:
     - prod
   tasks:
-    - copy: src=../../../bin/ dest=/home/isucon/bin owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/bin/ dest=/home/isucon/bin owner=isucon group=isucon mode=755
     - copy: src=../files/env.sh dest=/home/isucon/env.sh owner=isucon group=isucon mode=755
-    - unarchive:
-        copy=no
-        src=https://isucon6qimage.example.com/isucon6q/webapp.tar.gz
-        dest=/home/isucon/
-        creates=/home/isucon/webapp
-        owner=isucon
-        group=isucon
+    - copy: src=../../../webapp/go dest=/home/isucon/webapp/go owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/js dest=/home/isucon/webapp/js owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/php dest=/home/isucon/webapp/php owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/ruby dest=/home/isucon/webapp/ruby owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/perl dest=/home/isucon/webapp/perl owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/public dest=/home/isucon/webapp/public owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/python dest=/home/isucon/webapp/python owner=isucon group=isucon mode=755
+    - copy: src=../../../webapp/scala dest=/home/isucon/webapp/scala owner=isucon group=isucon mode=755
 
 - hosts: all
   gather_facts: no
@@ -102,8 +103,8 @@
     - name: php isutar (systemd)
       copy: src=../files/isutar.php.service dest=/etc/systemd/system/isutar.php.service owner=root mode=644
     - name: default application selection (isupam)
-      service: name=isupam state=running enabled=true
+      service: name=isupam state=started enabled=true
     - name: default application selection (isuda)
-      service: name=isuda.perl state=running enabled=true
+      service: name=isuda.perl state=started enabled=true
     - name: default application selection (isutar)
-      service: name=isutar.perl state=running enabled=true
+      service: name=isutar.perl state=started enabled=true

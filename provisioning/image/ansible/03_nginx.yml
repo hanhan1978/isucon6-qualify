@@ -11,7 +11,7 @@
     - copy: src=../files/nginx.conf dest=/etc/nginx/nginx.conf owner=root mode=644
       notify:
         - restart nginx
-    - service: name=nginx state=running enabled=true
+    - service: name=nginx state=started enabled=true
   handlers:
     - name: restart nginx
       action: service name=nginx state=restarted

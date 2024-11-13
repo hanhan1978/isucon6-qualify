@@ -31,16 +31,16 @@
       args:
         creates: /home/isucon/.local/php/bin/php
 
-- hosts: all
-  become: yes
-  gather_facts: no
-  tags:
-    - prod
-  tasks:
-    - unarchive:
-        copy=no
-        src=https://isucon6qimage.example.com/isucon6q/local.tar.gz
-        dest=/home/isucon/
-        creates=/home/isucon/.local
-        owner=isucon
-        group=isucon
+#- hosts: all
+#  become: yes
+#  gather_facts: no
+#  tags:
+#    - prod
+#  tasks:
+#    - unarchive:
+#        copy=no
+#        src=https://isucon6qimage.example.com/isucon6q/local.tar.gz
+#        dest=/home/isucon/
+#        creates=/home/isucon/.local
+#        owner=isucon
+#        group=isucon
