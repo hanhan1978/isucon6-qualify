@@ -11,7 +11,7 @@
         dest=/home/isucon/.xbuild
         update=yes
     # node
-    - command: /home/isucon/.xbuild/node-install v22.12.0 /home/isucon/.local/node
+    - command: /home/isucon/.xbuild/node-install v16.20.2 /home/isucon/.local/node
       args:
         creates: /home/isucon/.local/node/bin/node
     # golang
