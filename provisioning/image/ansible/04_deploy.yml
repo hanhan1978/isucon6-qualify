@@ -11,14 +11,6 @@
     - synchronize: src=../files/env.sh dest=/home/isucon/env.sh owner=no group=no
     - file: path=/home/isucon owner=isucon group=isucon state=directory recurse=yes
       become_user: root
-    - name: perl
-      shell: PATH=/home/isucon/.local/perl/bin:$PATH carton install --deployment
-      args:
-        chdir: /home/isucon/webapp/perl
-    - name: ruby
-      shell: PATH=/home/isucon/.local/ruby/bin:$PATH bundle install --deployment
-      args:
-        chdir: /home/isucon/webapp/ruby
     - name: node
       shell: PATH=/home/isucon/.local/node/bin:$PATH npm install
       args:
@@ -27,12 +19,16 @@
       shell: PATH=/home/isucon/.local/node/bin:$PATH npm install
       args:
         chdir: /home/isucon/webapp/js/node_modules/runkoa
-    - name: python
-      shell: /bin/bash /home/isucon/webapp/python/setup.sh
-      args:
-        chdir: /home/isucon/webapp/python
     - name: go
-      shell: PATH=/home/isucon/.local/go/bin:$PATH GOROOT=/home/isucon/.local/go GOPATH=/home/isucon/webapp/go make all
+      shell: PATH=/home/isucon/.local/go/bin:$PATH GOROOT=/home/isucon/.local/go GOPATH=/home/isucon/webapp/go go mod tidy
+      args:
+        chdir: /home/isucon/webapp/go
+    - name: go
+      shell: PATH=/home/isucon/.local/go/bin:$PATH GOROOT=/home/isucon/.local/go GOPATH=/home/isucon/webapp/go go build -o isutar isutar.go type.go util.go
+      args:
+        chdir: /home/isucon/webapp/go
+    - name: go
+      shell: PATH=/home/isucon/.local/go/bin:$PATH GOROOT=/home/isucon/.local/go GOPATH=/home/isucon/webapp/go go build -o isuda isuda.go type.go util.go
       args:
         chdir: /home/isucon/webapp/go
     - name: composer
@@ -60,11 +56,7 @@
     - copy: src=../../../webapp/go dest=/home/isucon/webapp/go owner=isucon group=isucon mode=755
     - copy: src=../../../webapp/js dest=/home/isucon/webapp/js owner=isucon group=isucon mode=755
     - copy: src=../../../webapp/php dest=/home/isucon/webapp/php owner=isucon group=isucon mode=755
-    - copy: src=../../../webapp/ruby dest=/home/isucon/webapp/ruby owner=isucon group=isucon mode=755
-    - copy: src=../../../webapp/perl dest=/home/isucon/webapp/perl owner=isucon group=isucon mode=755
     - copy: src=../../../webapp/public dest=/home/isucon/webapp/public owner=isucon group=isucon mode=755
-    - copy: src=../../../webapp/python dest=/home/isucon/webapp/python owner=isucon group=isucon mode=755
-    - copy: src=../../../webapp/scala dest=/home/isucon/webapp/scala owner=isucon group=isucon mode=755
 
 - hosts: all
   gather_facts: no
@@ -74,30 +66,14 @@
   tasks:
     - name: isupam (systemd)
       copy: src=../files/isupam.service dest=/etc/systemd/system/isupam.service owner=root mode=644
-    - name: perl isuda (systemd)
-      copy: src=../files/isuda.perl.service dest=/etc/systemd/system/isuda.perl.service owner=root mode=644
-    - name: perl isutar (systemd)
-      copy: src=../files/isutar.perl.service dest=/etc/systemd/system/isutar.perl.service owner=root mode=644
-    - name: ruby isuda (systemd)
-      copy: src=../files/isuda.ruby.service dest=/etc/systemd/system/isuda.ruby.service owner=root mode=644
-    - name: ruby isutar (systemd)
-      copy: src=../files/isutar.ruby.service dest=/etc/systemd/system/isutar.ruby.service owner=root mode=644
     - name: js isuda (systemd)
       copy: src=../files/isuda.js.service dest=/etc/systemd/system/isuda.js.service owner=root mode=644
     - name: js isutar (systemd)
       copy: src=../files/isutar.js.service dest=/etc/systemd/system/isutar.js.service owner=root mode=644
-    - name: python isuda (systemd)
-      copy: src=../files/isuda.python.service dest=/etc/systemd/system/isuda.python.service owner=root mode=644
-    - name: python isutar (systemd)
-      copy: src=../files/isutar.python.service dest=/etc/systemd/system/isutar.python.service owner=root mode=644
     - name: go isuda (systemd)
       copy: src=../files/isuda.go.service dest=/etc/systemd/system/isuda.go.service owner=root mode=644
     - name: go isutar (systemd)
       copy: src=../files/isutar.go.service dest=/etc/systemd/system/isutar.go.service owner=root mode=644
-    - name: scala isuda (systemd)
-      copy: src=../files/isuda.scala.service dest=/etc/systemd/system/isuda.scala.service owner=root mode=644
-    - name: scala isutar (systemd)
-      copy: src=../files/isutar.scala.service dest=/etc/systemd/system/isutar.scala.service owner=root mode=644
     - name: php isuda (systemd)
       copy: src=../files/isuda.php.service dest=/etc/systemd/system/isuda.php.service owner=root mode=644
     - name: php isutar (systemd)
@@ -105,6 +81,6 @@
     - name: default application selection (isupam)
       service: name=isupam state=started enabled=true
     - name: default application selection (isuda)
-      service: name=isuda.perl state=started enabled=true
+      service: name=isuda.go state=started enabled=true
     - name: default application selection (isutar)
-      service: name=isutar.perl state=started enabled=true
+      service: name=isutar.go state=started enabled=true
