@@ -36,3 +36,9 @@
         - libmcrypt-dev
         - libgd-dev
         - libtidy-dev
+        - pkg-config
+        - libsqlite3-dev
+        - libonig-dev
+        - libzip-dev
+        - libffi-dev
+        - libyaml-dev
